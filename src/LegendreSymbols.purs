@@ -44,20 +44,28 @@ module LegendreSymbols where
 
 import Prelude
 import Data.Maybe (Maybe(..), fromJust)
+import Data.String as String
 import Data.Either (Either(..))
 import Data.Monoid (class Monoid)
-import Data.Foldable (product, all, foldMap)
-import Data.ModularArithmetic (Z, mkZ, runZ, isPrime, primeFactors)
-import Data.Tuple (Tuple(..), fst)
+import Data.Foldable (product, all, any, foldMap)
+import Data.ModularArithmetic (Z, mkZ, runZ, isPrime, primeFactors, enumerate)
+import Data.Tuple (Tuple(..), fst, snd)
 import Data.Tuple.Nested ((/\))
 import Data.List (List(..), (:))
 import Data.List as List
-import Data.Typelevel.Num (D3)
+import Data.Typelevel.Num (class Pos, reifyIntP)
 import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Show (genericShow)
 import Partial.Unsafe (unsafePartial)
 
 data Expr = Expr Int (List (Tuple Int Int))
+
+-- A `Reductions` consists of an initial expression followed by a list of
+-- reduction steps (together with the rule being applied).
+type Reductions =
+  { initial :: Expr
+  , steps :: List (Tuple ReductionRule Expr)
+  }
 
 derive instance eqExpr :: Eq Expr
 derive instance ordExpr :: Ord Expr
@@ -105,20 +113,22 @@ emod :: Int -> Int -> Int
 emod x m =
   ((x `mod` m) + m) `mod` m
 
+by = flip Tuple
+
 -- Attempt to reduce a single Legendre symbol (a/p), returning an integer
 -- (either 1, 0, or -1) multiplied by a (possibly empty) list of simpler
 -- Legendre symbols (b1/p)(b2/p)... etc. This function also returns the
 -- reduction rule used.
-reduce :: Tuple Int Int -> Tuple Expr ReductionRule
+reduce :: Tuple Int Int -> Tuple ReductionRule Expr
 reduce (Tuple a p)
   | not (0 <= a && a < p) =
-      single (Tuple (a `emod` p) p) /\ RuleModulo
+      single (Tuple (a `emod` p) p) `by` RuleModulo
 
   | a == 0 =
-      lit 0 /\ RuleEvalZero
+      lit 0 `by` RuleEvalZero
 
   | a == 1 =
-      lit 1 /\ RuleEvalOne
+      lit 1 `by` RuleEvalOne
 
   | a == p - 1 =
       let
@@ -126,7 +136,7 @@ reduce (Tuple a p)
               then lit 1
               else lit (-1)
       in
-        e /\ RuleEvalMinusOne
+        e `by` RuleEvalMinusOne
 
   | a == 2 =
       let
@@ -135,7 +145,7 @@ reduce (Tuple a p)
               then lit 1
               else lit (-1)
       in
-        e /\ RuleEvalTwo
+        e `by` RuleEvalTwo
 
   | isPrime a =
       let
@@ -143,7 +153,7 @@ reduce (Tuple a p)
               then lit (-1) <> single (Tuple p a)
               else single (Tuple p a)
       in
-        e /\ RuleReciprocity
+        e `by` RuleReciprocity
 
   | Just (Tuple q k) <- asPrimePower a =
       let
@@ -151,7 +161,7 @@ reduce (Tuple a p)
               then lit 1
               else single (Tuple q p)
       in
-        e /\ RulePower
+        e `by` RulePower
 
   | otherwise =
       -- a is neither prime nor a power of a prime, so it can be written as a
@@ -161,16 +171,23 @@ reduce (Tuple a p)
       let
         e = foldMap (\b -> single (Tuple b p)) (primePowerFactors a)
       in
-        e /\ RuleMultiplicative
+        e `by` RuleMultiplicative
 
-reduceExpr :: Expr -> Either Int Expr
+reduceExpr :: Expr -> Either Int (Tuple ReductionRule Expr)
 reduceExpr = case _ of
+  Expr 0 _ ->
+    Left 0
   Expr i Nil ->
     Left i
-  Expr i _ | i == zero ->
-    Left zero
   Expr i (x:xs) ->
-    Right (fst (reduce x) <> Expr i xs)
+    Right (map (_ <> Expr i xs) (reduce x))
+
+isFullyReduced :: Expr -> Boolean
+isFullyReduced = case _ of
+  Expr _ Nil ->
+    true
+  _ ->
+    false
 
 primePowerFactors :: Int -> List Int
 primePowerFactors = bunchUp <<< primeFactors
@@ -218,6 +235,25 @@ renderExpr f = case _ of
         -1 -> "-"
         x  -> show x
 
+-- Return the next n reductions of the given Expr; if there are less than n
+-- reductions remaining to be made, then just return all remaining reductions.
+reduceN :: Int -> Expr -> Reductions
+reduceN n expr =
+  { initial: expr
+  , steps: List.reverse (go Nil n expr)
+  }
+  where
+  go acc n expr =
+    if n <= 0
+      then
+        acc
+      else
+        case reduceExpr expr of
+          Right step ->
+            go (step:acc) (n-1) (snd step)
+          Left _ ->
+            acc
+
 -- If `p` is an odd prime, the expression `legendreSymbol a p` evaluates to the
 -- Legendre symbol (a/p). Otherwise, `legendreSymbol a p` is not defined.
 legendreSymbol :: Int -> Int -> Int
@@ -225,5 +261,22 @@ legendreSymbol a p = go (single (Tuple a p))
   where
   go expr =
     case reduceExpr expr of
-      Right expr' -> go expr'
+      Right (Tuple _ expr') -> go expr'
       Left i -> i
+
+-- Calculate a Legendre symbol by brute force. Just for testing.
+legendreSymbol' :: Int -> Int -> Int
+legendreSymbol' a p =
+  if a `mod` p == 0
+    then 0
+    else if reifyIntP p hasSquareRoot
+           then 1
+           else -1
+  where
+  square :: forall a. Ring a => a -> a
+  square x = x * x
+
+  hasSquareRoot :: forall p. Pos p => p -> Boolean
+  hasSquareRoot _ =
+    any (_ == mkZ a)
+        (map square (enumerate :: _ _ (Z p)))
