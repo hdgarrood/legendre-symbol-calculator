@@ -8,10 +8,10 @@ that is, if there exists *x* such that *x^2* is congruent to *y* mod *p*.
 The Legendre symbol *(y/p)* is defined to be 1 if *y* is a quadratic residue
 modulo *p*, and -1 otherwise.
 
-The phraes "the notes" within the evaluation rules refers to the set of lecture
+The phrase "the notes" within the evaluation rules refers to the set of lecture
 notes which were used in the 2017/18 Introduction to Number Theory course at
 the University of Edinburgh. If you don't have those notes, a little googling
-will hopefully help you find proofs of these facts; alternatively, you might
+will hopefully help you find proofs of these facts. Alternatively, you might
 try to prove them yourself!
 
 ## Deployment
