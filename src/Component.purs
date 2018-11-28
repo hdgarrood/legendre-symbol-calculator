@@ -1,15 +1,13 @@
 module Component where
 
 import Prelude
-import Control.MonadZero (guard)
 import Control.Monad.Error.Class (throwError)
 import Data.ModularArithmetic.Primality (isPrime)
-import Data.Foldable (fold)
 import Data.String as String
 import Data.Array as Array
 import Data.List as List
-import Data.Maybe (Maybe(..), maybe)
-import Data.Either (Either(..), either, note)
+import Data.Maybe (Maybe(..))
+import Data.Either (either, note)
 import Data.Tuple (Tuple(..), fst, snd)
 import Data.Int as Int
 import Halogen as H
