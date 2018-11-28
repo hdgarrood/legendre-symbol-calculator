@@ -8,3 +8,4 @@
 /.purs*
 /.psa*
 dist/app.js
+app.tar.gz
