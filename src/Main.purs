@@ -2,10 +2,10 @@ module Main where
 
 import Prelude
 import Data.Maybe (Maybe(..))
-import DOM.Node.ParentNode (QuerySelector(..))
-import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Class (liftEff)
-import Control.Monad.Eff.Console (error)
+import Web.DOM.ParentNode (QuerySelector(..))
+import Effect (Effect)
+import Effect.Class (liftEffect)
+import Effect.Console (error)
 import Halogen.Aff as HA
 import Halogen.VDom.Driver (runUI)
 import Component (component)
@@ -13,7 +13,7 @@ import Component (component)
 selector :: QuerySelector
 selector = QuerySelector "#app"
 
-main :: Eff _ Unit
+main :: Effect Unit
 main = HA.runHalogenAff do
   HA.awaitLoad
   mel <- HA.selectElement selector
@@ -21,4 +21,4 @@ main = HA.runHalogenAff do
     Just el ->
       void $ runUI component unit el
     Nothing ->
-      liftEff (error "Unable to find #app element")
+      liftEffect (error "Unable to find #app element")

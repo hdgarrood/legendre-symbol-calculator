@@ -134,14 +134,14 @@ component =
   eval :: Query ~> H.ComponentDSL State Query Void m
   eval = case _ of
     Advance next -> do
-      H.modify (\s -> s { reductions = s.reductions + 1 })
+      H.modify_ (\s -> s { reductions = s.reductions + 1 })
       pure next
     ReplaceInput next -> do
-      H.modify updateInput
+      H.modify_ updateInput
       pure next
     UpdateNumerator new next -> do
-      H.modify (\s -> s { numerator = new })
+      H.modify_ (\s -> s { numerator = new })
       pure next
     UpdateDenominator new next -> do
-      H.modify (\s -> s { denominator = new })
+      H.modify_ (\s -> s { denominator = new })
       pure next
