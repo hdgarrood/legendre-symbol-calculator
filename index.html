@@ -34,6 +34,11 @@ form span:not(:first-child) {
 form span:not(:last-child) {
   margin-right: 1em;
 }
+
+.credits {
+  text-align: right;
+  font-style: italic;
+}
 </style>
   </head>
   <body>
@@ -96,6 +101,34 @@ form span:not(:last-child) {
           See Theorem 16.1 in the notes.
         </div>
       </div>
+      <div>
+        <h2>What is this?</h2>
+        <p>
+        This was a fun little app I put together while revising for a number theory
+        exam. The core idea is that the app helps you teach yourself to determine
+        whether a given number \(y\) is a <em>quadratic residue</em> modulo some odd
+        prime \(p\), that is, if there exists \(x\) such that \(x^2 \equiv y \pmod{p}\).
+        </p>
+
+        <p>
+        The Legendre symbol \(\left(\frac{y}{p}\right)\) is defined to be \(1\) if
+        \(y\) is a quadratic residue modulo \(p\), and \(-1\) otherwise.
+        </p>
+
+        <p>
+        The notes referred to within the evaluation rules are the set of lecture notes
+        which were used in the 2017/18 Introduction to Number Theory course at the
+        University of Edinburgh. If you don't have those notes, a little googling will
+        hopefully help you find proofs of these facts. Alternatively, you might try to
+        prove them yourself!
+        </p>
+      </div>
+      <p class="credits">
+        By
+        <a href="https://harry.garrood.me/">Harry Garrood</a>
+        /
+        <a href="https://github.com/hdgarrood/legendre-symbol-calculator">Source on GitHub</a>
+      </p>
     </div>
     <script src="app.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
