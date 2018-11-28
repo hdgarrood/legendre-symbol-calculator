@@ -86,24 +86,27 @@ component =
         # (_ == Just true)
 
       inputForm =
-        HH.div_ $
-          [ HH.input
+        HH.div [ HP.class_ (HH.ClassName "input-form") ] $
+          [ HH.span_ [ HH.text "Is" ]
+          , HH.input
               [ HP.type_ HP.InputText
               , HP.title "Numerator"
               , HP.value (show (fst state.input))
               , HE.onValueChange (HE.input UpdateNumerator)
               ]
+          , HH.span_ [ HH.text "a quadratic residue modulo" ]
           , HH.input
               [ HP.type_ HP.InputText
               , HP.title "Denominator"
               , HP.value (show (snd state.input))
               , HE.onValueChange (HE.input UpdateDenominator)
               ]
+          , HH.span_ [ HH.text "?" ]
           , HH.button
-              [ HP.title "Go"
+              [ HP.title "Let's find out!"
               , HE.onClick (HE.input_ ReplaceInput)
               ]
-              [ HH.text "Go" ]
+              [ HH.text "Let's find out!" ]
           ] <> Array.fromFoldable (map renderValidationError state.validationError)
 
       renderValidationError msg =
