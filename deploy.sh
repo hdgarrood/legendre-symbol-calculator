@@ -18,7 +18,7 @@ if check_status; then
     git checkout gh-pages
     tar xzf app.tar.gz
 
-    if git commit --all -m deploying; then
+    if git commit --all --allow-empty -m deploying; then
       echo "> git push origin gh-pages"
       git push origin gh-pages
     else
