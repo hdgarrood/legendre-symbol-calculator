@@ -1,5 +1,6 @@
 {
   "name": "legendre-symbol-calculator",
+  "license": "MIT",
   "ignore": [
     "**/.*",
     "node_modules",
