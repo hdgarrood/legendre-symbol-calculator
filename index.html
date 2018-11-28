@@ -3,10 +3,21 @@
   <head>
     <meta charset="utf-8">
     <title>Legendre Symbol Calculator</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 <style type="text/css">
 html {
   font-size: 120%;
-  font-family: serif;
+  font-family: 'Lato', sans-serif;
+  background-color: #ffeee8;
+  color: #331111;
+}
+
+a {
+  color: blue;
+}
+
+a:visited {
+  color: purple;
 }
 
 .container {
@@ -19,7 +30,7 @@ html {
   margin-top: 1em;
   margin-bottom: 1em;
   padding: 0.5em;
-  border: 1px solid gray;
+  border: 1px solid #331111;
   border-radius: 7px;
 }
 
@@ -49,55 +60,55 @@ form span:not(:last-child) {
         <h2>Evaluation rules (& names)</h2>
         Suppose \(p\) is an odd prime. Then:
         <div class="rule">
-          <em>EvalZero</em>: $$\left(\frac{0}{p}\right) = 0.$$
+          <em>EvalZero:</em> $$\left(\frac{0}{p}\right) = 0$$
         </div>
         <div class="rule">
-          <em>EvalOne</em>: \(1^2 \equiv 1 \pmod{p}\), so $$\left(\frac{1}{p}\right) = 1.$$
+          <em>EvalOne:</em> \(1^2 \equiv 1 \pmod{p}\), so $$\left(\frac{1}{p}\right) = 1$$
         </div>
         <div class="rule">
-          <em>Modulo</em>: If \(a \equiv b \pmod{p}\), then $$\left(\frac{a}{p}\right) = \left(\frac{b}{p}\right).$$
+          <em>Modulo:</em> If \(a \equiv b \pmod{p}\), then $$\left(\frac{a}{p}\right) = \left(\frac{b}{p}\right)$$
         </div>
         <div class="rule">
-          <em>Multiplicative</em>: For all \(a, b\), we have $$\left(\frac{ab}{p}\right) = \left(\frac{a}{p}\right)\left(\frac{b}{p}\right).$$
+          <em>Multiplicative:</em> For all \(a, b\), we have $$\left(\frac{ab}{p}\right) = \left(\frac{a}{p}\right)\left(\frac{b}{p}\right)$$
 
           See Lemma 15.13 in the notes.
         </div>
         <div class="rule">
-          <em>Power</em>: (This is really just a consequence of
+          <em>Power:</em> (This is really just a consequence of
           <em>Multiplicative</em>). For all \(a\), we have
-          $$\left(\frac{a^k}{p}\right) = \left(\frac{a}{p}\right)^k.$$
+          $$\left(\frac{a^k}{p}\right) = \left(\frac{a}{p}\right)^k$$
 
           In particular,
 
           $$\left(\frac{a^k}{p}\right) = \begin{cases}
             1 & \mathrm{if} \; k \; \mathrm{is} \; \mathrm{even} \\
             \left(\frac{a}{p}\right) & \mathrm{if} \; k \; \mathrm{is} \; \mathrm{odd}
-          \end{cases}.$$
+          \end{cases}$$
 
           See Lemma 15.13 in the notes.
         </div>
         <div class="rule">
-          <em>EvalMinusOne</em>: $$\left(\frac{p-1}{p}\right) =
+          <em>EvalMinusOne:</em> $$\left(\frac{p-1}{p}\right) =
           \begin{cases}
             1 & \mathrm{if} \; p \equiv 1 \pmod{4} \\
             -1 & \mathrm{if} \; p \equiv -1 \pmod{4} \\
-          \end{cases}.$$
+          \end{cases}$$
           See Theorem 15.11 in the notes.
         </div>
         <div class="rule">
-          <em>EvalTwo</em>: $$\left(\frac{2}{p}\right) =
+          <em>EvalTwo:</em> $$\left(\frac{2}{p}\right) =
           \begin{cases}
             1 & \mathrm{if} \; p \equiv \pm 1 \pmod{8} \\
             -1 & \mathrm{if} \; p \equiv \pm 3 \pmod{8} \\
-          \end{cases}.$$
+          \end{cases}$$
           See Proposition 16.9 in the notes.
         </div>
         <div class="rule">
-          <em>Reciprocity</em>: Let \(q\) be an odd prime distinct from \(p\).
+          <em>Reciprocity:</em> Let \(q\) be an odd prime distinct from \(p\).
           If \(p \equiv q \equiv -1 \pmod{4}\), then
-          $$\left(\frac{p}{q}\right) = -\left(\frac{q}{p}\right).$$
+          $$\left(\frac{p}{q}\right) = -\left(\frac{q}{p}\right)$$
           Otherwise,
-          $$\left(\frac{p}{q}\right) = \left(\frac{q}{p}\right).$$
+          $$\left(\frac{p}{q}\right) = \left(\frac{q}{p}\right)$$
           See Theorem 16.1 in the notes.
         </div>
       </div>
