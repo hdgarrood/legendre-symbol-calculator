@@ -17,7 +17,14 @@ if check_status; then
     tar czf app.tar.gz -C dist/ app.js index.html
     git checkout gh-pages
     tar xzf app.tar.gz
-    git commit --all -m deploying
+
+    if git commit --all -m deploying; then
+      echo "> git push origin gh-pages"
+      git push origin gh-pages
+    else
+      echo "Commit failed; not pushing."
+    fi
+
     rm app.tar.gz
 
     echo "switching back to ${BRANCH}..."
