@@ -14,7 +14,7 @@ if check_status; then
     BRANCH=`git rev-parse --abbrev-ref HEAD`
 
     pulp build --to dist/app.js
-    tar czf app.tar.gz -C dist/ app.js index.html
+    tar czf app.tar.gz -C dist/ app.js index.html Legendre.jpg
     git checkout gh-pages
     tar xzf app.tar.gz
 
