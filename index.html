@@ -8,8 +8,27 @@
 html {
   font-size: 120%;
   font-family: 'Lato', sans-serif;
-  background-color: #ffeee8;
+  background-color: #e3dfd4;
   color: #331111;
+}
+
+.legendre {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 660px;
+  height: 750px;
+  background-image: linear-gradient(to top, rgba(227,223,212,1.0), rgba(227,223,212,0.0) 50%),
+                    url(Legendre.jpg);
+  background-position: top right;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: -1;
+}
+
+.overlay {
+  background: transparent;
+  z-index: 1;
 }
 
 a {
@@ -53,6 +72,8 @@ form span:not(:last-child) {
 </style>
   </head>
   <body>
+    <div class="legendre"></div>
+    <div class="legendre overlay" title="Adrien-Marie Legendre was the 19th century French mathematician who introduced the Legendre symbol. This is the only known likeness of him: a caricature drawn by Julien-Léopold Boilly in 1820."></div>
     <div class="container">
       <h1>Legendre Symbol Calculator</h1>
       <div id="app"></div>
